@@ -1,0 +1,44 @@
+﻿@page "{id:int?}"
+@model Wba.StovePalace.Pages.Fuels.DetailsModel
+
+@{
+    ViewData["Title"] = "Details brandstoftype";
+    ViewData["Email"] = "";
+    ViewData["Loginstyle"] = "visibility: visible; ";
+    ViewData["Logoutstyle"] = "visibility: hidden; ";
+    ViewData["Configstyle"] = "visibility: hidden; ";
+    if (!string.IsNullOrEmpty(Model.Availability.Email))
+    {
+        ViewData["Email"] = Model.Availability.Email;
+        ViewData["BasketCount"] = Model.Availability.BasketCount;
+        ViewData["Loginstyle"] = "visibility: hidden; ";
+        ViewData["Logoutstyle"] = "visibility: visible; ";
+        if (Model.Availability.IsAdmin)
+        {
+            ViewData["Configstyle"] = "visibility: visible; ";
+        }
+    }}
+
+<h1>Details brandstoftype</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fuel.FuelName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fuel.FuelName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <div class="btn-group">
+        <a asp-page="./Edit" asp-route-id="@Model.Fuel.Id" class="btn  btn-warning" title="Wijzigen">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+        <a asp-page="./Index" class="btn btn-success" title="Terug naar overzicht">
+            <i class="fas fa-undo-alt"></i>
+        </a>
+    </div>
+</div>

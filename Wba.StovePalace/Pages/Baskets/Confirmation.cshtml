@@ -1,0 +1,92 @@
+﻿@page
+@model Wba.StovePalace.Pages.Baskets.ConfirmationModel
+@{
+    ViewData["Title"] = "Mijn winkelmandje";
+    ViewData["Email"] = "";
+    ViewData["Loginstyle"] = "visibility: visible; ";
+    ViewData["Logoutstyle"] = "visibility: hidden; ";
+    ViewData["Configstyle"] = "visibility: hidden; ";
+    if (!string.IsNullOrEmpty(Model.Availability.Email))
+    {
+        ViewData["Email"] = Model.Availability.Email;
+        ViewData["BasketCount"] = Model.Availability.BasketCount;
+        ViewData["Loginstyle"] = "visibility: hidden; ";
+        ViewData["Logoutstyle"] = "visibility: visible; ";
+        if (Model.Availability.IsAdmin)
+        {
+            ViewData["Configstyle"] = "visibility: visible; ";
+        }
+    }}
+
+<h1>Bestelling bevestigen</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-9">
+                Product
+            </th>
+            <th class="col-3">
+                Aantal in winkelmandje
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            decimal total = 0;
+        }
+        @foreach (var item in Model.Baskets)
+        {
+            string imagePath = "~/images/" + (item.Stove.ImagePath ?? "noimage.jpg");
+            decimal subtotal = item.Stove.SalesPrice * item.Count;
+            <tr>
+                <td>
+                    <div class="row">
+                        <div class="col-6 text-right">
+                            <h3>
+                                @Html.DisplayFor(modelItem => item.Stove.Brand.BrandName)
+                            </h3>
+                            <h4>
+                                @Html.DisplayFor(modelItem => item.Stove.ModelName)
+                            </h4>
+                            <h5>
+                                @Html.DisplayFor(modelItem => item.Stove.Fuel.FuelName)
+                                <br />
+                                @Html.DisplayFor(modelItem => item.Stove.SalesPrice)
+                                <br />
+                                @Html.DisplayFor(modelItem => item.Stove.Performance)
+                            </h5>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-left">
+                                <img class="imageThumbnail" src="@imagePath" asp-append-version="true" />
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="mb-3 h4">
+                        Aantal : 
+                        @Html.DisplayFor(modelItem => item.Count)
+                    </div>                    
+                    <div class="mb-3 h4">
+                        Subtotaal : @subtotal.ToString("€#,##0.00")
+                    </div>
+                </td>
+            </tr>
+            total += subtotal;
+        }
+    </tbody>
+</table>
+<h3>
+    Totaal winkelmandje : @total.ToString("€#,##0.00")
+</h3>
+
+<form method="post">
+    <h4>
+        <button type="submit" class="btn btn-success text-light">
+            <i class="far fa-check-circle"></i> Bestelling bevestigen
+        </button>
+    </h4>
+</form>
+
